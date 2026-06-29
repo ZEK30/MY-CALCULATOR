@@ -1,0 +1,24 @@
+const display = document.getElementById('display');
+
+function appendValue(input) {
+    display.value += input;
+}
+
+function clearDisplay() {
+    display.value = '';
+}
+
+function deleteLast() {
+    display.value = display.value.slice(0, -1);
+}
+
+function calculate() {
+    try {
+        // Evaluate the string expression securely
+        if (display.value) {
+            display.value = Function(`"use strict"; return (${display.value})`)();
+        }
+    } catch (error) {
+        display.value = 'Error';
+    }
+}
