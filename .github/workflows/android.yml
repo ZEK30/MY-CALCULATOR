@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Setup Java
+      - name: Setup Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -28,10 +28,11 @@ jobs:
 
       - name: Init Bubblewrap project
         run: |
-          bubblewrap init --manifest https://YOUR-SITE-URL/manifest.json
+          yes "n" | bubblewrap init --manifest https://zek30.github.io/MY-CALCULATOR/manifest.json --skipPwaValidation
 
       - name: Build APK
-        run: bubblewrap build
+        run: |
+          yes "" | bubblewrap build --skipSigning
 
       - name: Find APK
         run: find . -name "*.apk" 2>/dev/null || echo "No APK found"
