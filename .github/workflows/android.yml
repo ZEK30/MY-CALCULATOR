@@ -17,8 +17,21 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Build Android APK
-        run: npx @pwabuilder/cli build android --path . --packageId MY.CALCULATOR --name CALCULATOR
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Init Bubblewrap project
+        run: |
+          bubblewrap init --manifest https://YOUR-SITE-URL/manifest.json
+
+      - name: Build APK
+        run: bubblewrap build
 
       - name: Find APK
         run: find . -name "*.apk" 2>/dev/null || echo "No APK found"
@@ -27,4 +40,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: CALCULATOR-APK
-          path: android/app/build/outputs/apk/debug/*.apk
+          path: ./*.apk
